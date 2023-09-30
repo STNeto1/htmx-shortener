@@ -1,3 +1,18 @@
 <section id="content">
-  <h1>Content</h1>
+  {{if .message}}
+  <p>{{.message}}</p>
+  {{end}} {{if .error}}
+  <p>{{.error}}</p>
+  {{end}}
+
+  <form
+    method="post"
+    hx-post="/shorten"
+    hx-target="#content"
+    hx-swap="innerHTML"
+  >
+    <input type="url" name="url" placeholder="Enter URL" required />
+
+    <button type="submit">Shorten</button>
+  </form>
 </section>
