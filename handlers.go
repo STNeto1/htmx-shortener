@@ -1,6 +1,10 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"log"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 func HandleIndex(c *fiber.Ctx) error {
 	return c.Render("pages/index", fiber.Map{}, "layouts/main")
@@ -18,6 +22,17 @@ func HandleCreateShortURL(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
+
+	hashedLink, err := CreateShortenedLink(body.URL)
+	if err != nil {
+		log.Println("failed to create shortened link", err)
+		return c.Render("pages/index", fiber.Map{
+			"error": "failed to create shortened link",
+			"url":   body.URL,
+		})
+	}
+
+	log.Println("hashed link", hashedLink)
 
 	return c.Render("pages/index", fiber.Map{
 		"message": "URL shortened!",
