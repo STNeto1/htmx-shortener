@@ -1,22 +1,83 @@
-<section id="content">
-  {{if .message}}
-  <p>{{.message}}</p>
-  {{end}} {{if .error}}
-  <p>{{.error}}</p>
+<section
+  id="content"
+  class="flex flex-col gap-4 p-4 w-full max-w-xl border border-opacity-20 border-neutral-100"
+>
+  <h1 class="text-center text-2xl">Shorten your link</h1>
+
+  {{if .error}}
+  <div class="alert alert-error p-2">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="stroke-current shrink-0 h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <span>{{.error}}</span>
+  </div>
+
+  {{end}} {{if .message}}
+  <div class="alert alert-success p-2">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="stroke-current shrink-0 h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <span>{{.message}}</span>
+  </div>
   {{end}} {{if .link}}
-  <p>
-    <a href="{{.link}}" target="_blank">Your new link</a>
-  </p>
+  <div class="flex items-center gap-4">
+    <a href="{{.link}}" class="link" target="_blank">Your new link</a>
+
+    <button id="copy-btn" class="btn btn-outline btn-sm">Copy</button>
+  </div>
   {{end}}
+
+  <div class="divider"></div>
 
   <form
     method="post"
     hx-post="/shorten"
     hx-target="#content"
-    hx-swap="innerHTML"
+    hx-swap="outerHTML"
+    class="form-control w-full gap-4"
   >
-    <input type="url" name="url" placeholder="Enter URL" required />
+    <div>
+      <label class="label">
+        <span class="label-text">Link to be shortened</span>
+      </label>
+      <input
+        type="url"
+        name="url"
+        placeholder="Enter URL"
+        required
+        value="{{.url}}"
+        class="input input-bordered w-full"
+      />
+    </div>
 
-    <button type="submit">Shorten</button>
+    <button type="submit" class="btn btn-outline">Shorten</button>
   </form>
 </section>
+
+<script>
+  {{if .link}}
+  document.getElementById("copy-btn").addEventListener("click", function () {
+    navigator.clipboard.writeText("{{.link}}");
+  });
+  {{end}}
+</script>
