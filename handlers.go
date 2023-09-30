@@ -23,7 +23,7 @@ func HandleCreateShortURL(c *fiber.Ctx) error {
 		})
 	}
 
-	hashedLink, err := CreateShortenedLink(body.URL)
+	link, err := CreateShortenedLink(body.URL)
 	if err != nil {
 		log.Println("failed to create shortened link", err)
 		return c.Render("pages/index", fiber.Map{
@@ -32,13 +32,22 @@ func HandleCreateShortURL(c *fiber.Ctx) error {
 		})
 	}
 
-	log.Println("hashed link", hashedLink)
-
 	return c.Render("pages/index", fiber.Map{
 		"message": "URL shortened!",
+		"link":    link,
 	}, "layouts/main")
 }
 
 func HandleRedirect(c *fiber.Ctx) error {
-	return c.SendString("Redirect")
+	url := c.Params("url")
+	if url == "" {
+		return c.Redirect("/")
+	}
+
+	whereToRedirect, err := GetLinkByShortenedLink(url)
+	if err != nil {
+		return c.Redirect("/")
+	}
+
+	return c.Redirect(whereToRedirect)
 }

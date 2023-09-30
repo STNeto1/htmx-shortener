@@ -17,7 +17,7 @@ func main() {
 
 	app.Get("/", HandleIndex)
 	app.Post("/shorten", HandleCreateShortURL)
-	app.Get("/:url", HandleRedirect)
+	app.Get("/s/:url", HandleRedirect)
 
 	app.Listen(getPort("3000"))
 }

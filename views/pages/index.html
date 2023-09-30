@@ -3,6 +3,10 @@
   <p>{{.message}}</p>
   {{end}} {{if .error}}
   <p>{{.error}}</p>
+  {{end}} {{if .link}}
+  <p>
+    <a href="{{.link}}" target="_blank">Your new link</a>
+  </p>
   {{end}}
 
   <form

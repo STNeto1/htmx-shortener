@@ -80,7 +80,7 @@ func createLinkHash(link string) (string, error) {
 func createFullUrl(link string) string {
 	prefix := os.Getenv("BASE_URL")
 
-	return fmt.Sprintf("%s/%s", prefix, link)
+	return fmt.Sprintf("%s/s/%s", prefix, link)
 }
 
 func CreateShortenedLink(link string) (string, error) {
@@ -101,4 +101,23 @@ func CreateShortenedLink(link string) (string, error) {
 	}
 
 	return createFullUrl(hashedLink), nil
+}
+
+func GetLinkByShortenedLink(shortenedLink string) (string, error) {
+	var link string
+
+	sb := sqlbuilder.NewSelectBuilder().From("links")
+
+	selectSql, args := sb.
+		Select("link").
+		Where(
+			sb.Equal("shortened_link", shortenedLink),
+		).
+		Build()
+	err := DBConn.QueryRow(selectSql, args...).Scan(&link)
+	if err != nil {
+		return "", err
+	}
+
+	return link, nil
 }
