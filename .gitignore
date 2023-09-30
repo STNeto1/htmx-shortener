@@ -21,3 +21,4 @@
 go.work
 
 /tmp
+db.sqlite3

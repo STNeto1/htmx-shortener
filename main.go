@@ -9,6 +9,8 @@ import (
 )
 
 func main() {
+	CreateDB()
+
 	app := fiber.New(fiber.Config{
 		Views: html.New("./views", ".html"),
 	})
