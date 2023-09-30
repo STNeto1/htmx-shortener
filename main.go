@@ -5,10 +5,13 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html/v2"
 )
 
 func main() {
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		Views: html.New("./views", ".html"),
+	})
 
 	app.Get("/", HandleIndex)
 	app.Post("/shorten", HandleCreateShortURL)

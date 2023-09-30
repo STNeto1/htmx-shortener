@@ -3,7 +3,7 @@ package main
 import "github.com/gofiber/fiber/v2"
 
 func HandleIndex(c *fiber.Ctx) error {
-	return c.SendString("Hello, World!")
+	return c.Render("pages/index", fiber.Map{}, "layouts/main")
 }
 
 func HandleCreateShortURL(c *fiber.Ctx) error {
