@@ -41,6 +41,7 @@ func getSchemas() []string {
 		Define("id", "INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT ").
 		Define("link", "VARCAR(255)").
 		Define("shortened_link", "VARCHAR(255)").
+		Define("created_at", "TIMESTAMP DEFAULT CURRENT_TIMESTAMP").
 		Build()
 	schemas = append(schemas, linksTableSql)
 
